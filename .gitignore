@@ -1,0 +1,43 @@
+# Byggnadsfiler
+build/
+*.o
+*.obj
+*.exe
+*.dll
+*.pdb
+*.ilk
+*.aps
+*.ipch
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.log
+*.lib
+*.sbr
+*.sdf
+*.idb
+*.mdf
+*.ldf
+
+# Visual Studio-användarinställningar och filer
+*.suo
+*.user
+*.userosscache
+*.suo
+*.suo
+*.opensdf
+*.tss
+
+# VS Code
+.vscode/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+*.cmake
+*.json
+.vs/*
