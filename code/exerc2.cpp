@@ -18,7 +18,9 @@
 void test(const std::map<std::string, int>& t, const std::vector<std::pair<std::string, int>>& v,
           const std::string& file_name, int n);
 
-void toLowerCase(std::string& str);
+std::string toLowerCase(std::string& str);
+
+std::string removePuncts(const std::string& s);
 
 /***************************
  * Main function           *
@@ -40,22 +42,43 @@ int main() {
     int counter{0};  // to count total number of words read from the input file
 
     //ADD CODE to build table
+  
     std::string wordHolder; 
+    while (in_File >> wordHolder){ //läser tills den kommer till ett mellanrum
+        std::string S = toLowerCase(wordHolder); 
+        table[removePuncts(S)] += 1; //If the word is not in the map, a new entry is created with a count of 1?
 
-    while (std::getline(in_File, wordHolder, ' ')) { //läser tills den kommer till ett mellanrum
-        table[toLowerCase(wordHolder)] = 1; //If the word is not in the map, a new entry is created with a default count of 0.
-
+        counter++;
     }
 
     
     std::vector<std::pair<std::string, int>> freq;
 
     //ADD CODE to build vector freq
+    std::transform(table.begin(), table.end(), std::back_inserter(freq),
+        [](const std::pair<const std::string, int>& element) {
+            return element;
+        });
+
+
+    std::sort(freq.begin(), freq.end(), [](const auto& a, const auto& b) {
+        if (a.second != b.second) {
+            return a.second > b.second; //decending 10,9,8...
+        }
+        return a.first < b.first;  //alfabetiskt
+        });
+
+
+  
+
+    for (auto e : freq) {
+        std::cout << e.first << " " << e.second << "\n";
+    }
 
 
     /* ************** Testing **************** */
 
-    test(table, freq, name, counter);
+    test(table, freq, file_name, counter); //ändrade name ---> file_name 
 }
 
 
@@ -102,7 +125,9 @@ void test(const std::map<std::string, int>& t, const std::vector<std::pair<std::
     std::cout << "\nPassed all tests successfully!!\n";
 }
 
-std::string toLowerCase(const std::string& str) {
+
+//egna:
+std::string toLowerCase(std::string& str) {
    /* for (auto& c : str) {
         c = tolower(c);
     }
@@ -114,4 +139,15 @@ std::string toLowerCase(const std::string& str) {
         [](unsigned char c) {return std::tolower(c); }
     );
     return str;
+}
+
+std::string removePuncts(const std::string& s) {
+    //lambda
+    //[capture](params) {body}
+    std::string result;
+    std::remove_copy_if(s.begin(), s.end(), std::back_inserter(result), [](unsigned char c) { return std::ispunct(c) && c !='\'' && c !='\-'; }); // (true om det är punct && INTE en ') 
+    return result;
+
+  
+
 }
