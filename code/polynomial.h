@@ -4,9 +4,18 @@
  * Header file                  *
  *******************************/
 
+
 #include <vector>
 #include <cmath>
+#include <format>
+#include <string>
+#include <algorithm> //std::copy
 #include <map>
+#include <iterator>
+#include <utility>
+#include <ostream>
+#include <iostream>
+#include <sstream>
 
 class Polynomial {
 public: 
@@ -29,7 +38,7 @@ public:
 	int degree();
 
 	//tye conversion operator
-	explicit operator std::string() const; 
+	explicit operator std::string(); 
 
 	//operators
 	Polynomial& operator+=(const Polynomial& rhs);
@@ -44,12 +53,13 @@ public:
 
 	Polynomial& operator*(const Polynomial& rhs);
 
-	Polynomial& operator==(const Polynomial& rhs);
+	bool operator==(const Polynomial& rhs) const;
 
-	Polynomial& operator<<(const Polynomial& rhs);
+	friend std::ostream& operator<<(std::ostream& os, Polynomial& rhs) {
+		os << std::string(rhs);
+		return os;
+	}
 
-
-protected: 
 
 private: 
 

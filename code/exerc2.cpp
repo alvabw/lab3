@@ -10,11 +10,15 @@
 #include <utility>   //std::pair
 #include <fstream>
 #include <cassert>
+#include <algorithm>
+#include <cctype>
 
 
 // A function to test the output of the program
 void test(const std::map<std::string, int>& t, const std::vector<std::pair<std::string, int>>& v,
           const std::string& file_name, int n);
+
+void toLowerCase(std::string& str);
 
 /***************************
  * Main function           *
@@ -36,7 +40,14 @@ int main() {
     int counter{0};  // to count total number of words read from the input file
 
     //ADD CODE to build table
+    std::string wordHolder; 
 
+    while (std::getline(in_File, wordHolder, ' ')) { //läser tills den kommer till ett mellanrum
+        table[toLowerCase(wordHolder)] = 1; //If the word is not in the map, a new entry is created with a default count of 0.
+
+    }
+
+    
     std::vector<std::pair<std::string, int>> freq;
 
     //ADD CODE to build vector freq
@@ -89,4 +100,18 @@ void test(const std::map<std::string, int>& t, const std::vector<std::pair<std::
     assert(v == result2);  // test if vector contents are correct
 
     std::cout << "\nPassed all tests successfully!!\n";
+}
+
+std::string toLowerCase(const std::string& str) {
+   /* for (auto& c : str) {
+        c = tolower(c);
+    }
+    std::string result 
+  
+    return result;*/
+
+    std::transform(str.begin(), str.end(), str.begin(),
+        [](unsigned char c) {return std::tolower(c); }
+    );
+    return str;
 }

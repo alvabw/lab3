@@ -4,13 +4,7 @@
  *******************************/
 
 #include "polynomial.h"
-#include <vector>
-#include <cmath>
-#include <format>
-#include <algorithm> //std::copy
-#include <map>
-#include <iterator>
-#include <utility>
+
 
  //consturctor
 Polynomial::Polynomial(int a, int b) {
@@ -63,11 +57,11 @@ int Polynomial::degree() {
 }
 
 //tye conversion operator
-Polynomial::operator std::string() const {
+Polynomial::operator std::string() {
     //i.second är koefficienten och i.first är exponenten
     std::string S = "";
 
-    std::map<int, int>::iterator it = coefficients_table.begin();  
+    std::map<int, int>::iterator it = coefficients_table.begin();
     for (it; it != coefficients_table.end(); ++it) {
        
             if (it->second < 0) {
@@ -89,7 +83,7 @@ Polynomial::operator std::string() const {
 Polynomial& Polynomial::operator+=(const Polynomial& rhs) {
 
    for (const auto& i : rhs.coefficients_table) {
-        coefficients_table[i.first] += i.second; 
+        coefficients_table[i.first] += i.second; //For each term in rhs, add the coefficient (i.second) to the corresponding term in the current polynomial 
 
         if (coefficients_table[i.second] == 0) {
             coefficients_table.erase(i.first);
@@ -103,21 +97,14 @@ Polynomial& Polynomial::operator+=(const Polynomial& rhs) {
 //vi är här typ
 Polynomial& Polynomial::operator-=(const Polynomial& rhs) {
 
-    for (auto i : coefficients_table) {
-        for (auto j : rhs.coefficients_table) {
-            if (i.first == j.first) {      
-                if (i.second != j.second) { //coefficienterna är olika 
-                    i.second -= j.second;
-                }
-                else {
-                    coefficients_table.erase(i.first);
-                }
-            }
-            else {
-                coefficients_table.insert(j.first, -1*j.second);
-            }
+    for (const auto& i : rhs.coefficients_table) {
+        coefficients_table[i.first] -= i.second; //For each term in rhs, subtract the coefficient (i.second) to the corresponding term in the current polynomial 
+
+        if (coefficients_table[i.second] == 0) {
+            coefficients_table.erase(i.first);
         }
-    }
+     }
+    
 
     return *this;
 }
@@ -125,36 +112,42 @@ Polynomial& Polynomial::operator-=(const Polynomial& rhs) {
 Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
     Polynomial P; 
 
-    for (auto i : P.coefficients_table) {
-        for (auto j : rhs.coefficients_table) {
-            i.second *= j.second;
-            i.first += j.first;
+    for (const auto& i : coefficients_table) {
+        for (const auto& j : rhs.coefficients_table) {
+            int newCoeff = i.second * j.second;
+            int newExponent = i.first + j.first;
 
-
+            P.coefficients_table[newExponent] += newCoeff; //man lägger in coeff vid graden exponent
         }
     }
     //ifall ngra termer får samma exponent på olika platser ska d slås ihop
-        return *this; 
+        return P; 
 }
 
-Polynomial& Polynomial::operator+(const Polynomial& lhs, const Polynomial& rhs) {
-    Polynomial p(lhs);
+Polynomial& Polynomial::operator+(const Polynomial& rhs) {
+    Polynomial P(*this);
     return P += rhs; 
 
 }
 
 Polynomial& Polynomial::operator-(const Polynomial& rhs) {
-
+    Polynomial P(*this);
+    return P -= rhs;
 }
 
 Polynomial& Polynomial::operator*(const Polynomial& rhs) {
-
+    Polynomial P(*this);
+    return P *= rhs;
 }
 
-Polynomial& Polynomial::operator==(const Polynomial& rhs) {
-
+bool Polynomial::operator==(const Polynomial& rhs) const {
+   /* if (coefficients_table.empty() && rhs.coefficients_table.empty()) {
+        return true;
+    }*/
+    return coefficients_table == rhs.coefficients_table;
 }
 
-Polynomial& Polynomial::operator<<(const Polynomial& rhs) {
-
-}
+//std::ostream& operator<<(std::ostream& os, const Polynomial& rhs) {
+//    os << std::string(rhs);
+//    return os; 
+//}
