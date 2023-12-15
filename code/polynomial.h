@@ -20,11 +20,7 @@
 class Polynomial {
 public: 
 	//consturctor
-	Polynomial(int a, int b);
-
-	Polynomial(int d);
-
-	Polynomial() = default; 
+	Polynomial(int a = 0, int b = 0); //Polynomial P(5) => a = 5, b = default = 0
 
 	//vector with vectors
 	Polynomial(const std::vector<std::pair<int, int>> & V);
@@ -38,7 +34,7 @@ public:
 	int degree();
 
 	//tye conversion operator
-	explicit operator std::string(); 
+	explicit operator std::string() const; 
 
 	//operators
 	Polynomial& operator+=(const Polynomial& rhs);
@@ -47,11 +43,12 @@ public:
 
 	Polynomial& operator*=(const Polynomial& rhs);
 
-	Polynomial& operator+(const Polynomial& rhs);
+	
+	friend Polynomial& operator+(Polynomial lhs, const Polynomial& rhs);
 
-	Polynomial& operator-(const Polynomial& rhs);
+	friend Polynomial& operator-(Polynomial lhs, const Polynomial& rhs);
 
-	Polynomial& operator*(const Polynomial& rhs);
+	friend Polynomial& operator*(Polynomial lhs, const Polynomial& rhs);
 
 	bool operator==(const Polynomial& rhs) const;
 

@@ -7,16 +7,23 @@
 
 
  //consturctor
-Polynomial::Polynomial(int a, int b) {
-    coefficients_table[a] = b; 
-}
+//Polynomial::Polynomial(int a, int b) {
+//    coefficients_table[a] = b; 
+//}
+//
+//Polynomial::Polynomial(int d) {
+//    coefficients_table[0] = d;
+//}
 
-Polynomial::Polynomial(int d) {
-    coefficients_table[0] = d;
-}
+ Polynomial::Polynomial(int a, int b) {
+     if (a != 0) {
+        coefficients_table[a] = b; 
+     }
+     else {
+         coefficients_table[0] = 0; //denna else ska kanske inte vara med, får ej stora Noll värden i map table
+     }
+  }
 
-Polynomial::Polynomial() {
-}
 
 //vector with vectors KOLLA PÅ DENNA IGEN
 Polynomial::Polynomial(const std::vector<std::pair<int, int>> & V ) {
@@ -25,10 +32,7 @@ Polynomial::Polynomial(const std::vector<std::pair<int, int>> & V ) {
    
 }
 
-//copiable
-Polynomial::Polynomial(const Polynomial& rhs) {
-   coefficients_table = rhs.coefficients_table;
-}
+//copiable är default, man behöver inte omdefieniera det  här
 
 //assignable
 Polynomial& Polynomial::operator=(const Polynomial& rhs) {
@@ -44,7 +48,7 @@ int Polynomial::degree() {
     int currentDegree; 
 
     for (it; it != coefficients_table.end(); ++it) {
-        int currentDegree = it->first;
+           currentDegree = it->first;
 
         if (currentDegree > maxDegree) {
            maxDegree = currentDegree;
@@ -57,21 +61,38 @@ int Polynomial::degree() {
 }
 
 //tye conversion operator
-Polynomial::operator std::string() {
+Polynomial::operator std::string() const{
     //i.second är koefficienten och i.first är exponenten
     std::string S = "";
+    int counter = 0; 
 
-    std::map<int, int>::iterator it = coefficients_table.begin();
-    for (it; it != coefficients_table.end(); ++it) {
-       
+    /*if (coefficients_table.empty()) {
+        return std::string("0");
+    }*/
+
+    /*std::map<int, int>::iterator it = coefficients_table.begin();*/
+    for (auto it = coefficients_table.begin(); it != coefficients_table.end(); ++it) {
+        if (it->first == 0 && it->second == 0) {
+        std::cout << "hej :3    ";
+            S = "0";
+         }
+
             if (it->second < 0) {
                 S += std::format(" - {} * X^{}", abs(it->second), it->first);
             }
             else {
-                S += std::format(" + {} * X^{}", it->second, it->first);
+               
+                if (counter == 0) {
+                     S = std::format("{} * X^{}", it->second, it->first);
+                } 
+                else {
+                    S += std::format(" + {} * X^{}", it->second, it->first);
+                }
             }
+            counter++;
         
     }
+    std::cout << "  S = " << S << "     ";
     return S; 
 
 
@@ -124,20 +145,17 @@ Polynomial& Polynomial::operator*=(const Polynomial& rhs) {
         return P; 
 }
 
-Polynomial& Polynomial::operator+(const Polynomial& rhs) {
-    Polynomial P(*this);
-    return P += rhs; 
+Polynomial& operator+(Polynomial lhs, const Polynomial& rhs) {
+    return lhs += rhs; 
 
 }
 
-Polynomial& Polynomial::operator-(const Polynomial& rhs) {
-    Polynomial P(*this);
-    return P -= rhs;
+Polynomial& operator-(Polynomial lhs, const Polynomial& rhs) {
+    return lhs -= rhs;
 }
 
-Polynomial& Polynomial::operator*(const Polynomial& rhs) {
-    Polynomial P(*this);
-    return P *= rhs;
+Polynomial& operator*(Polynomial lhs,const Polynomial& rhs) {
+    return lhs *= rhs;
 }
 
 bool Polynomial::operator==(const Polynomial& rhs) const {

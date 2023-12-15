@@ -20,12 +20,12 @@
 
         //räknar lite?
         std::transform(other_factors.begin(), other_factors.end(), other_factors.begin(),
-            [factor](double value) {return -1.0 / (factor + value); }); 
+            [factor](double& value) {return -1.0 / (factor + value); }); 
 
         //Summera ihop
         double result{ init };
 
-       result = std::accumulate(other_factors.begin(), other_factors.end(), 0.0); 
+       result = std::accumulate(other_factors.begin(), other_factors.end(), init); 
 
         return result;
     }
@@ -50,18 +50,16 @@ int main() {
     //ändrar nu terms 
     //skicka till calculte
     std::transform(terms.begin(), terms.end(), terms.begin(),
-        [](double term) {return calculate(term); });
+        [](double& term) {return calculate(term); });
 
     //Fixar lilla perentesen
     std::transform(power_terms.begin(), power_terms.end(), power_terms.begin(),
-        [](double term) {return std::pow(16.0, -term); });
+        [](double& term) {return std::pow(16.0, term * (-1)); });
 
     double result{ 0.0 };
 
     //inner product av terms(stora parentesen) och powwer_terms(lilla perentesen)
-    result = std::inner_product(terms.begin(), terms.end(), power_terms.begin(), 0.0,
-        std::plus<double>(), [](double termsValue, double powerValue) 
-        { return  termsValue * powerValue; });
+    result += std::inner_product(std::begin(terms), std::end(terms), std::begin(power_terms), 0.0);
 
     std::cout << std::format("{:.15f}\n", result);
     
