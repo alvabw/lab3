@@ -43,7 +43,7 @@ int main() {
 
     //Iota för varje element för den ++
     std::vector<double> terms(n);
-    std::iota(terms.begin(), terms.end(), 0.0);
+    std::iota(terms.begin(), terms.end(), 0.0); //+1 för varje slot
 
     std::vector<double> power_terms{ terms };
 

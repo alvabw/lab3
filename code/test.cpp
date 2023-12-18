@@ -11,20 +11,6 @@
 #include "polynomial.h"
 
 int main() {
-    Polynomial PP =  Polynomial({ {1, -16},
-                            {2, 44},
-                            {4, -25},
-                            {5, 20},
-                            {6, -58},
-                            {8, 10},
-                            {10, 10},
-                            {12, -1},
-                            {17, 6},
-                            {18, -15},
-                            {22, 3} });
-    std::cout << std::string(PP) << '\n';
-
-
     /*********************************************
      * Test 1: constructors,                     *
      *         conversion to string, and         *
@@ -127,9 +113,9 @@ int main() {
                      {25, 120},
                      {26, -450},
                      {27, 240}});
-std::cout << "\n p0 =" << std::string(p0) << '\n';
-    p0 = p4 - p0 + p1 * p2;
-    
+
+    p0 = p4 - p0 + p1 * p2; //riktig 
+
     assert(std::string(p0) ==
            std::string("266X^2 - 1408X^3 + 1936X^4 + 800X^5 - 2840X^6 + 3616X^7 - 4479X^8 - "
                        "1320X^9 + 4180X^10 - 648X^28 - 12X^29 + 90X^30 + 60X^32 + 30X^34 - 180X^35 "
@@ -143,6 +129,7 @@ std::cout << "\n p0 =" << std::string(p0) << '\n';
 
     Polynomial p5{2 * p0 - p0 + 100};
     p5 -= 1;
+    
 
     assert(std::string(p5) ==
            std::string("99X^0 + 266X^2 - 1408X^3 + 1936X^4 + 800X^5 - 2840X^6 + 3616X^7 - 4479X^8 "

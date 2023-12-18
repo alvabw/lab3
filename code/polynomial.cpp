@@ -126,37 +126,32 @@ Polynomial Polynomial::operator*=(const Polynomial& rhs) {
 }
 
 
-//+ operator 3 olika
-Polynomial& operator+(Polynomial lhs, const Polynomial& rhs) {
+//+ operator 2 olika
+Polynomial operator+(Polynomial lhs, const Polynomial& rhs) {
     return lhs += rhs; 
 }
-
-Polynomial& operator+(int lhs, const Polynomial& rhs) {
-    return Polynomial(lhs) += rhs;
-}
-
-Polynomial& operator+(Polynomial lhs, const int rhs) {
+Polynomial operator+(Polynomial& lhs, const int rhs) {
     return lhs += Polynomial(rhs);
 }
 
 
-
+//- operator 2 olika
 Polynomial operator-(Polynomial lhs, const Polynomial& rhs) {
-    Polynomial result = lhs;
-    result -= rhs;
+    return lhs -= rhs;
+}
+Polynomial operator-(Polynomial& lhs, const int rhs) {
+    return lhs -= Polynomial(rhs); 
+}
+
+//* operator 2 olika
+Polynomial operator*(Polynomial& lhs, const Polynomial& rhs) {
+    Polynomial result = 1; // multiplicerar lhs med 1 för att int ändra lhs
+    result *= lhs; //sätter till en annan variabel. Annars ändrades p1 i test.cpp :( 
+    result *= rhs;
     return result;
 }
-
-
-Polynomial& operator*(Polynomial& lhs,const Polynomial& rhs) {
-    lhs *= rhs;
-    return lhs;
-}
-
-Polynomial& operator*(int i, const Polynomial& rhs) {
-    Polynomial P = Polynomial(i);
-    P *= rhs;
-    return P;
+Polynomial operator*(int i, const Polynomial& rhs) {
+   return Polynomial(i) *= rhs;
 }
 
 
@@ -169,10 +164,15 @@ bool operator==(const Polynomial& lhs, const Polynomial& rhs){
     return lhs.coefficients_table == rhs.coefficients_table;
 }
 
+std::ostream& operator<<(std::ostream& os, Polynomial& rhs) {
+    os << std::string(rhs);
+    return os;
+}
+
 //Egna funktioner
 Polynomial Polynomial::mult(std::pair<int, int> i){
     Polynomial result;
-    for (std::pair<int, int> it : this->coefficients_table) {
+    for (std::pair<int, int> it : coefficients_table) {
         int coef = it.second * i.second;
         int exp = it.first + i.first;
 
