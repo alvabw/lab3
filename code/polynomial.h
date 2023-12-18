@@ -20,16 +20,22 @@
 class Polynomial {
 public: 
 	//consturctor
-	Polynomial(int a = 0, int b = 0); //Polynomial P(5) => a = 5, b = default = 0
+	Polynomial() = default; 
+
+	Polynomial(int coef, int exp);
+
+	Polynomial(int coef);
+
+	/*~Polynomial() = default;*/
 
 	//vector with vectors
 	Polynomial(const std::vector<std::pair<int, int>> & V);
 
 	//copiable
-	Polynomial(const Polynomial& rhs) = default; 
+	/*Polynomial(const Polynomial& rhs) = default; */
 
 	//assignable
-	Polynomial& operator=(const Polynomial& rhs); 
+	/*Polynomial& operator=(const Polynomial& rhs) = default; */
 
 	int degree();
 
@@ -41,16 +47,20 @@ public:
 
 	Polynomial& operator-=(const Polynomial& rhs);
 
-	Polynomial& operator*=(const Polynomial& rhs);
+	Polynomial operator*=(const Polynomial& rhs);
 
+	Polynomial mult(std::pair<int, int> rhs);
 	
 	friend Polynomial& operator+(Polynomial lhs, const Polynomial& rhs);
+	friend Polynomial& operator+(int lhs, const Polynomial& rhs);
+	friend Polynomial& operator+(Polynomial lhs, const int rhs);
 
-	friend Polynomial& operator-(Polynomial lhs, const Polynomial& rhs);
+	friend Polynomial operator-(Polynomial lhs, const Polynomial& rhs);
 
-	friend Polynomial& operator*(Polynomial lhs, const Polynomial& rhs);
+	friend Polynomial& operator*(Polynomial& lhs, const Polynomial& rhs);
+	friend Polynomial& operator*(int i, const Polynomial& rhs); 
 
-	bool operator==(const Polynomial& rhs) const;
+	friend bool operator==(const Polynomial& lhs, const Polynomial& rhs);
 
 	friend std::ostream& operator<<(std::ostream& os, Polynomial& rhs) {
 		os << std::string(rhs);
@@ -63,4 +73,6 @@ private:
 	//std::vector<std::pair<double, double>> coefficients_table; 
 	std::map<int,int> coefficients_table; //key exponent, value coefficient
 	//key är konstant
+
+	
 };

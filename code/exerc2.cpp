@@ -71,9 +71,9 @@ int main() {
 
   
 
-    for (auto e : freq) {
-        std::cout << e.first << " " << e.second << "\n";
-    }
+    //for (auto e : freq) {
+    //    std::cout << e.first << " " << e.second << "\n";
+    //}
 
 
     /* ************** Testing **************** */
