@@ -18,11 +18,11 @@
 
         std::vector<double> other_factors{ 4.0, 5.0, 6.0 };
 
-        //räknar lite?
+        //Skapar en vektor av termer
         std::transform(other_factors.begin(), other_factors.end(), other_factors.begin(),
             [factor](double& value) {return -1.0 / (factor + value); }); 
 
-        //Summera ihop
+        //Summera ihop så det blir ett tal 
         double result{ init };
 
        result = std::accumulate(other_factors.begin(), other_factors.end(), init); 

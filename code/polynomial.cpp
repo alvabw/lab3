@@ -22,13 +22,9 @@ Polynomial::Polynomial(int coef) {
 //vector with vectors KOLLA PÅ DENNA IGEN
 Polynomial::Polynomial(const std::vector<std::pair<int, int>> & V ) {
 
-   /*std::copy(V.begin(), V.end(), std::inserter(coefficients_table, coefficients_table.begin())); */
-   std::copy(V.begin(), V.end(), std::inserter(coefficients_table, end(coefficients_table)));
+   std::copy(V.begin(), V.end(), std::inserter(coefficients_table, coefficients_table.begin())); //conatiner och var inserter ska börja
+
 }
-
-//copiable är default, man behöver inte omdefieniera det  här
-//assignable dedfault
-
 
 //degree
 int Polynomial::degree() {
@@ -52,11 +48,11 @@ Polynomial::operator std::string() const{
         S = "0";
     }
 
-    for (const auto& it : coefficients_table) {
+    for (const auto& it : coefficients_table) { //auto automatiskt kan avgöra type of elements in range
         if ( it.first == 0 || it.second !=0) { //ifall coeff = 0 så ska den ju inte skrivas ut xD 
           
             if (counter == 0) {
-                    S = std::format("{}X^{}", it.second, it.first); //föasta värdet (om den är posiiv) 
+                    S = std::format("{}X^{}", it.second, it.first); //föasta värdet
             }
          
             
@@ -75,8 +71,6 @@ Polynomial::operator std::string() const{
 }
 
 //operators
-//EJ NESTED FOR LOOPS ENDAST I *= 
-//PAPPRET!
 Polynomial& Polynomial::operator+=(const Polynomial& rhs) {
 
    for (const auto& i : rhs.coefficients_table) {
@@ -90,8 +84,6 @@ Polynomial& Polynomial::operator+=(const Polynomial& rhs) {
     return *this; 
 }
 
-
-//vi är här typ
 Polynomial& Polynomial::operator-=(const Polynomial& rhs) {
 
     for (const auto& i : rhs.coefficients_table) {
@@ -109,8 +101,8 @@ Polynomial& Polynomial::operator-=(const Polynomial& rhs) {
 Polynomial Polynomial::operator*=(const Polynomial& rhs) {
     Polynomial returnPol;
 
-    if (this->coefficients_table.empty() || rhs.coefficients_table.empty()) {
-        this->coefficients_table.clear();
+    if (coefficients_table.empty() || rhs.coefficients_table.empty()) {
+        coefficients_table.clear();
         return *this; //om någon 0 blir allt 0
     }
 
@@ -121,8 +113,8 @@ Polynomial Polynomial::operator*=(const Polynomial& rhs) {
     }
     
     //ifall ngra termer får samma exponent på olika platser ska d slås ihop
-    *this = returnPol; 
-    return *this; 
+    *this = returnPol;
+    return *this;  //allows chaining assignment 
 }
 
 
@@ -155,12 +147,7 @@ Polynomial operator*(int i, const Polynomial& rhs) {
 }
 
 
-
-
 bool operator==(const Polynomial& lhs, const Polynomial& rhs){
-   /* if (coefficients_table.empty() && rhs.coefficients_table.empty()) {
-        return true;
-    }*/
     return lhs.coefficients_table == rhs.coefficients_table;
 }
 

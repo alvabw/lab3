@@ -26,6 +26,7 @@ public:
 
 	Polynomial(int coef);
 
+	//destructor
 	~Polynomial() = default;
 
 	//vector with vectors

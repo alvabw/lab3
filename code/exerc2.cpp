@@ -128,12 +128,6 @@ void test(const std::map<std::string, int>& t, const std::vector<std::pair<std::
 
 //egna:
 std::string toLowerCase(std::string& str) {
-   /* for (auto& c : str) {
-        c = tolower(c);
-    }
-    std::string result 
-  
-    return result;*/
 
     std::transform(str.begin(), str.end(), str.begin(),
         [](unsigned char c) {return std::tolower(c); }
@@ -145,7 +139,8 @@ std::string removePuncts(const std::string& s) {
     //lambda
     //[capture](params) {body}
     std::string result;
-    std::remove_copy_if(s.begin(), s.end(), std::back_inserter(result), [](unsigned char c) { return std::ispunct(c) && c !='\'' && c !='\-'; }); // (true om det är punct && INTE en ') 
+    std::remove_copy_if(s.begin(), s.end(), std::back_inserter(result), 
+        [](unsigned char c) { return std::ispunct(c) && c !='\'' && c !='\-'; }); // (true om det är punct && INTE en ' eller -) 
     return result;
 
   
